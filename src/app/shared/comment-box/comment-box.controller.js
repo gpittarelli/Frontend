@@ -1,6 +1,63 @@
+import h from 'react-hyperscript';
+import moment from 'moment';
+
 angular
   .module('tf2stadium.controllers')
-  .controller('CommentBoxController', CommentBoxController);
+  .controller('CommentBoxController', CommentBoxController)
+  .constant('CommentViewComponent', CommentViewComponent);
+
+function CommentViewComponent(props) {
+  return h('div', props.messages.map(
+    (message) =>
+      h('div.chat-message', [
+        h('span.chat-message-time', moment(message.timestamp).format('H:mm')),
+        h('span', message.player.name),
+        h('span', message.rawMessage),
+        JSON.stringify(message)
+      ])));
+}
+
+/*
+            <div ng-repeat="message in room.messages track by $index"
+                 class="chat-message">
+            </div>
+              <span class="chat-message-time"
+                    ng-if="$root.currentTimestampsOption !== 'none'">{{message.timestamp | date:($root.currentTimestampsOption === 'hours12'? 'shortTime' : 'H:mm')}}</span>
+              <md-menu>
+                <md-button
+                   class="chat-player-name"
+                   ng-class="[message.player.tags]"
+                   ng-click="$mdOpenMenu($event)"
+                   tabindex="-1"
+                   md-menu-origin>
+                  {{message.player.name}}:
+                </md-button>
+                <md-menu-content width="3">
+                  <md-menu-item>
+                    <md-button
+                       ng-click="commentBox.goToSteamProfile(message.player.steamid)">
+                      Steam profile
+                    </md-button>
+                  </md-menu-item>
+                  <md-menu-item ui-sref="user-profile({userID: message.player.steamid})">
+                    <md-button>
+                      Stadium profile
+                    </md-button>
+                  </md-menu-item>
+		              <md-menu-item
+                     ng-if="($root.userProfile.role=='moderator' || $root.userProfile.role=='administrator') && !message.deleted">
+		                <md-button
+		                   ng-click="commentBox.deleteMessage(message)">
+		                  Delete Message
+		                </md-button>
+		              </md-menu-item>
+                </md-menu-content>
+              </md-menu>
+              <span ng-class="{'chat-message-text':true,
+                               'chat-message-deleted':message.deleted}"
+                    ng-bind-html="message.message"></span>
+
+*/
 
 /** @ngInject */
 function CommentBoxController($rootScope, $scope, $window, $log, $timeout,
@@ -76,6 +133,8 @@ function CommentBoxController($rootScope, $scope, $window, $log, $timeout,
       var room = vm.rooms.filter(function (r) {
         return roomId === r.id;
       })[0];
+
+      console.log('viewtest', CommentViewComponent(room));
 
       if (room) {
         vm.showRoomNotification[roomId] =
