@@ -91,17 +91,20 @@ function LobbyService($rootScope, $state, $mdDialog, $timeout, $interval,
 
   ////////////////////////////////////////////////
   // Substitutes list
+  var subListStream = Kefir.fromEvents(Websocket, 'subListData');
   factory.subList = [];
 
-  factory.getSubList = function () {
-    return factory.subList;
-  };
-
-  Websocket.onJSON('subListData', function (data) {
+  subListStream.onValue(function (data) {
+    console.log('subList', data);
     factory.subList = data;
     $rootScope.$emit('sub-list-updated');
   });
 
+  factory.subListStream = subListStream;
+
+  factory.getSubList = function () {
+    return factory.subList;
+  };
 
   ////////////////////////////////////////////////
   // Server/Mumble join information
