@@ -5,6 +5,9 @@ if (window && !window.angular) {
   require('angular');
 }
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 import moment from 'moment';
 
 if (typeof __BUILD_STATS__ !== 'undefined') {
