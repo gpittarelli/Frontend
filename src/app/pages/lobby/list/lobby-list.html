@@ -22,11 +22,15 @@
   </md-tabs>
 </div>
 
+<react-component name="SubList"
+                 props="{substitutes: lobbyList.subList}"></react-component>
+
 <div id="subList" ng-controller="SubListController as vm">
   <div class="substitute md-button"
        md-ink-ripple
        ng-repeat="sub in vm.subList | LobbyListSettingsFilter"
-       ng-click="lobbyList.join(sub.id, sub.team, sub.class, $event)">
+       ng-click="">
+    <!-- lobbyList.join(sub.id, sub.team, sub.class, $event) -->
     <div class="icon lobby-icon-{{::sub.class | stripSlotNameNumber}}"></div>
     <span
        ng-bind-template="{{sub.region.name}} {{sub.type}} {{sub.class | stripSlotNameNumber}} needed in {{sub.map}}. Mumble {{sub.mumbleRequired ? '': 'not '}}required"></span>

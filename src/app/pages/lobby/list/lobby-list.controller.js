@@ -34,4 +34,8 @@ function LobbyListController($scope, LobbyService, Settings) {
     vm.lobbies = LobbyService.getList();
   });
 
+  vm.subList = LobbyService.getSubList();
+  LobbyService.subListStream.onValue(function (data) {
+    vm.subList = data;
+  });
 }
