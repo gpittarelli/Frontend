@@ -1,5 +1,41 @@
 <div
    md-ink-ripple
+   class="no-animate save-settings-form">
+  <h2>Save Settings</h2>
+
+  <md-input-container ng-if="lobbyCreate.hasSavedConfigurations">
+    <md-select
+       placeholder="Saved Configurations"
+       ng-model="selectedConfiguration"
+       ng-change="lobbyCreate.loadSavedConfiguration(selectedConfiguration)">
+      <md-option
+         ng-repeat="(name, _) in lobbyCreate.savedConfigurations"
+         ng-value="name"
+         ng-bind="name"></md-option>
+    </md-select>
+  </md-input-container>
+
+  <span ng-if="lobbyCreate.hasSavedConfigurations">
+    Or
+  </span>
+
+  <md-input-container md-no-float>
+    <input type="text"
+           md-maxlength="50"
+           ng-model="lobbyCreate.settingsName"
+           placeholder="Enter a name">
+  </md-input-container>
+
+  <md-button
+     ng-class="{'md-raised md-primary': true}"
+     ng-click="lobbyCreate.saveServer(lobbyCreate.serverName)"
+     ng-disabled="!lobbyCreate.lobbySettings.server || !lobbyCreate.serverName">
+    Save
+  </md-button>
+</div>
+
+<div
+   md-ink-ripple
    class="rent-server-back-button no-animate"
    ng-click="lobbyCreate.verifiedServer=false;lobbyCreate.serverState=undefined"
    ng-show="!!lobbyCreate.serverState">

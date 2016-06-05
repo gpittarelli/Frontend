@@ -27,17 +27,20 @@ function LobbyCreateController($document, $state, $scope, $rootScope,
 
   vm.showServers = false;
   vm.savedServers = {};
+  vm.savedConfigurations = {};
   vm.serverName = '';
   vm.servemeServer = {};
 
-  function loadServers(settings) {
+  function syncSettings(settings) {
     vm.savedServers = angular.fromJson(settings.savedServers);
+    vm.savedConfigurations = angular.fromJson(settings.savedConfigurations);
     vm.showServers = Object.keys(vm.savedServers).length > 0;
+    vm.hasSavedConfigurations = Object.keys(vm.savedConfigurations).length > 0;
   }
 
-  Settings.getSettings(loadServers);
+  Settings.getSettings(syncSettings);
   var handler = $rootScope.$on('settings-updated', function () {
-    Settings.getSettings(loadServers);
+    Settings.getSettings(syncSettings);
   });
   $scope.$on('$destroy', handler);
 
@@ -52,6 +55,17 @@ function LobbyCreateController($document, $state, $scope, $rootScope,
 
   vm.preloadImage = function (src) {
     PreloadService.queuePreload(src);
+  };
+
+  vm.loadSavedServer = function (name) {
+    vm.serverName = name;
+
+    // password saving intentionally left commented out: We want to
+    // somehow offer that functionality, but are still discussing
+    // different options and their security implications.
+    var server = vm.savedServers[name];
+    vm.lobbySettings.server = server.url;
+    // vm.lobbySettings.rconpwd = server.password;
   };
 
   vm.loadSavedServer = function (name) {

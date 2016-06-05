@@ -82,6 +82,7 @@ function SettingsConfigBlock(SettingsProvider, VocalNotifications) {
     SettingsProvider.settings.emoteStyle = 'emojione';
     SettingsProvider.settings.animationLength = 'animation-normal';
     SettingsProvider.settings.savedServers = '{}';
+    SettingsProvider.settings.savedConfigurations = '{}';
     SettingsProvider.settings.videoBackground = 'on';
 
     // Use Array.find(arrVal,..) vs arrValue.find(..) to avoid using a
